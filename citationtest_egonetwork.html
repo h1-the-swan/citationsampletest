@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Egocentric Network</title>
+    <style>
+        
+@import url(../style.css);
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .8;
+}
+
+        .leftheading {
+            position: absolute;
+            left: 60px;
+            width: 300px;
+            float: left;
+            font-size: 20px;
+        }
+
+        .rightheading {
+            position: absolute;
+            left: 360px;
+            width: 150px;
+            float: left;
+            font-size: 20px;
+        }
+        .leftsvg {
+            position: absolute;
+            left: 0px;
+            top: 50px;
+            width: 300px;
+        }
+
+        .rightsvg {
+            position: absolute;
+            left: 280px;
+            top: 50px;
+            width: 300px;
+        }
+
+        button {
+            position: absolute;
+            left: 250px;
+            top: 60px;
+            width: 80px;
+        }
+
+        .logo {
+            position: absolute;
+            left: 200px;
+            top: 310px;
+            font-size: 16px;
+            opacity: 0.5;
+        }
+
+        .info {
+            position: absolute;
+            top: 350px;
+            left: 30px;
+            width: 500px;
+        }
+</style>
+</head>
+<body>
+    <!--<h1>Egocentric Network</h1>-->
+    <div class="leftheading">Jonica’s network</div>
+    <div class="rightheading">Alex’s network</div>
+<script src="../extern/d3.v3.js"></script>
+    <script src="../cola.v3.min.js"></script>
+<script>
+    var width = 280,
+        height = 280;
+
+    var color = d3.scale.category20();
+    var connected = true;
+    var button;
+    document.onkeyup = keyhandler;
+    function keyhandler(e) {
+        if (e.keyCode === 32) {
+            disconnectNode0();
+        }
+    }
+    function disconnectNode0() {
+        if (connected) {
+            egosvg1.disconnectNode0();
+            egosvg2.disconnectNode0();
+            egosvg1.restart();
+            egosvg2.restart();
+            connected = false;
+            button.text("Connect Self");
+        } else {
+            egosvg1.connectNode0();
+            egosvg2.connectNode0();
+            egosvg1.restart();
+            egosvg2.restart();
+            connected = true;
+            button.text("Disconnect Self");
+        }
+    }
+
+    var body = d3.select("body");
+  
+
+    var egosvg = (function () {
+	    function egosvg(file) {
+		    this.d3cola = cola.d3adaptor().convergenceThreshold(1e-4)
+		    .size([width, height]);
+
+		    this.svg = d3.select("body").append("svg")
+		      .attr("width", width)
+		      .attr("height", height);
+
+		    this.edgegroup = this.svg.append("g");
+		    this.nodegroup = this.svg.append("g");
+
+		    this.edges = [];
+
+		    var _this = this;
+
+		    d3.csv(file, function(links) {
+		    });
+	    }
+    });
