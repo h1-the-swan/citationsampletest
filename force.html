@@ -26,9 +26,26 @@ var force = d3.layout.force()
     .size([width, height]);
 
 d3.csv("cit-HepTh.csv", function(links) {
-	links.filter(function(link) {
-		return link.source == 1001;
+	var adjacent = [];
+	links.forEach(function(link) {
+		if (link.source == 1001) {
+			adjacent.push(link.target);
+			} else if (link.target == 1001) {
+			adjacent.push(link.source);
+		}
 	});
+	function inArray(val, arr) {
+		for (var i=0; i<arr.length; i++) {
+			if (arr[i]==val) {
+				return true;
+			}
+		}
+		return false;
+	}
+	links = links.filter(function(link) {
+		return inArray(link.source, adjacent) || inArray(link.target, adjacent);
+	});
+	console.log(adjacent);
 console.log(links.length);
   var nodesByName = {};
 
@@ -40,6 +57,7 @@ console.log(links.length);
 
   // Extract the array of nodes from the map by name.
   var nodes = d3.values(nodesByName);
+  console.log(nodes.length);
 
   // Create the link lines.
   var link = svg.selectAll(".link")
